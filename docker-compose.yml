@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  php:
+    build: ./docker/php
+    depends_on:
+      - db
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    ports:
+      - 8080:80
+
+  db:
+    image: 'mysql:5.7'
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    ports:
+#      - ローカル:コンテナ
+      - '23306:3306'
